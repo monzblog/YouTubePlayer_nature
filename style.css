@@ -101,7 +101,7 @@ html, body {
 .main {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 320px;
   gap: 20px;
   padding: 20px 0;
   overflow: hidden;
@@ -224,26 +224,201 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 0 6px rgba(109,191,91,0.5);
 }
 
-/* プレイリスト */
-.playlist-section {
+/* サイドバー */
+.sidebar {
   display: flex;
   flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.card {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--radius);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
-.playlist-header {
-  padding: 12px 16px;
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--text-dim);
   border-bottom: 1px solid rgba(255,255,255,0.08);
   background: rgba(0,0,0,0.2);
-  flex-shrink: 0;
+}
+
+/* ポモドーロ */
+.pomo-cycle {
+  font-size: 0.62rem;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  text-transform: none;
+}
+
+.pomo-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.pomo-mode {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 14px;
+  border-radius: 20px;
+}
+
+.mode-work  { background: rgba(109,191,91,0.2);  color: var(--accent); }
+.mode-break { background: rgba(91,150,191,0.25); color: #7bb8e0; }
+
+.pomo-time {
+  font-size: 2.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: var(--text-main);
+  text-shadow: 0 0 16px rgba(109,191,91,0.25);
+}
+
+.pomo-controls {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.btn-pomo {
+  flex: 1;
+  padding: 7px 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-main);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.btn-pomo:hover { background: rgba(109,191,91,0.15); color: var(--accent); }
+
+.btn-pomo-primary {
+  background: var(--green-mid);
+  border-color: var(--green-light);
+}
+
+.btn-pomo-primary:hover { background: var(--green-light); color: #fff; }
+
+.pomo-settings {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.pomo-settings label,
+.autoswitch-body label {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pomo-settings input[type="number"] {
+  width: 42px;
+  padding: 3px 5px;
+  font-size: 0.78rem;
+  text-align: center;
+  color: var(--text-main);
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+}
+
+.pomo-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.pomo-check input { accent-color: var(--accent); }
+
+/* 自動切り替え */
+.autoswitch-body {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.autoswitch-body select {
+  color: var(--text-main);
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 0.76rem;
+}
+
+.auto-countdown {
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+/* トグルスイッチ */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 20px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  transition: 0.25s;
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.25s;
+}
+
+.switch input:checked + .slider { background: var(--green-light); }
+.switch input:checked + .slider::before { transform: translateX(18px); }
+
+/* プレイリスト */
+.playlist-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 120px;
 }
 
 .playlist {
@@ -311,12 +486,13 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /* レスポンシブ */
-@media (max-width: 700px) {
+@media (max-width: 760px) {
   html, body { overflow: auto; }
   .app { height: auto; min-height: 100vh; }
   .main {
     grid-template-columns: 1fr;
     overflow: visible;
   }
-  .playlist-section { max-height: 300px; }
+  .sidebar { overflow: visible; }
+  .playlist-section { max-height: 320px; }
 }

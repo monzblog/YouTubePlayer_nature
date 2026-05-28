@@ -53,9 +53,64 @@
         </div>
       </div>
 
-      <aside class="playlist-section">
-        <div class="playlist-header">プレイリスト</div>
-        <ul id="playlist" class="playlist"></ul>
+      <aside class="sidebar">
+        <!-- ポモドーロタイマー -->
+        <section class="card pomodoro" id="pomodoro">
+          <div class="card-header">
+            <span>🍅 ポモドーロ</span>
+            <span id="pomo-cycle" class="pomo-cycle">0 セット完了</span>
+          </div>
+          <div class="pomo-body">
+            <div id="pomo-mode" class="pomo-mode mode-work">作業</div>
+            <div id="pomo-time" class="pomo-time">25:00</div>
+            <div class="pomo-controls">
+              <button id="pomo-start" class="btn-pomo btn-pomo-primary">開始</button>
+              <button id="pomo-reset" class="btn-pomo">リセット</button>
+              <button id="pomo-skip" class="btn-pomo">スキップ</button>
+            </div>
+            <div class="pomo-settings">
+              <label>作業
+                <input type="number" id="pomo-work" min="1" max="120" value="25" /> 分
+              </label>
+              <label>休憩
+                <input type="number" id="pomo-break" min="1" max="60" value="5" /> 分
+              </label>
+            </div>
+            <label class="pomo-check">
+              <input type="checkbox" id="pomo-pause-bgm" checked />
+              休憩中はBGMを止める
+            </label>
+          </div>
+        </section>
+
+        <!-- 自動BGM切り替え -->
+        <section class="card autoswitch">
+          <div class="card-header">
+            <span>🔄 自動切り替え</span>
+            <label class="switch">
+              <input type="checkbox" id="auto-toggle" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="autoswitch-body">
+            <label>間隔
+              <select id="auto-interval">
+                <option value="5">5 分</option>
+                <option value="10" selected>10 分</option>
+                <option value="15">15 分</option>
+                <option value="20">20 分</option>
+                <option value="30">30 分</option>
+              </select>
+            </label>
+            <span id="auto-countdown" class="auto-countdown">--:--</span>
+          </div>
+        </section>
+
+        <!-- プレイリスト -->
+        <section class="card playlist-section">
+          <div class="card-header">プレイリスト</div>
+          <ul id="playlist" class="playlist"></ul>
+        </section>
       </aside>
     </main>
 
