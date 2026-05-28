@@ -4,14 +4,11 @@
   --green-dark:  #1a2e1a;
   --green-mid:   #2d5a27;
   --green-light: #4a8c3f;
-  --green-pale:  #7ec872;
-  --earth:       #8b6b3d;
-  --cream:       #f0ead6;
   --text-main:   #e8f5e2;
   --text-dim:    #a8c8a0;
   --accent:      #6dbf5b;
-  --shadow:      rgba(0,0,0,0.5);
-  --radius:      12px;
+  --radius:      14px;
+  --tap:         48px;
 }
 
 html, body {
@@ -20,9 +17,16 @@ html, body {
   background: var(--green-dark);
   color: var(--text-main);
   overflow: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* 背景アニメーション */
+/* タップ時のフラッシュと誤ズーム抑止 */
+button, input, select, label {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 背景 */
 .bg-overlay {
   position: fixed;
   inset: 0;
@@ -35,7 +39,7 @@ html, body {
 }
 
 @keyframes bgShift {
-  from { filter: hue-rotate(0deg) brightness(1); }
+  from { filter: hue-rotate(0deg)  brightness(1);   }
   to   { filter: hue-rotate(15deg) brightness(1.1); }
 }
 
@@ -50,10 +54,10 @@ html, body {
   padding: 0 16px;
 }
 
-/* ヘッダー */
+/* ── ヘッダー ── */
 .header {
   flex-shrink: 0;
-  padding: 16px 0 12px;
+  padding: 14px 0 10px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -61,57 +65,55 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--accent);
   text-shadow: 0 0 20px rgba(109,191,91,0.4);
+  white-space: nowrap;
 }
 
-.leaf { font-size: 1.3rem; }
+.leaf { font-size: 1.2rem; }
 
-.controls-top {
-  display: flex;
-  gap: 8px;
-}
+.controls-top { display: flex; gap: 8px; flex-shrink: 0; }
 
 .btn-icon {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--text-dim);
   cursor: pointer;
-  width: 36px;
-  height: 36px;
+  width: var(--tap);
+  height: var(--tap);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
 }
 
-.btn-icon svg { width: 20px; height: 20px; fill: currentColor; }
+.btn-icon svg    { width: 22px; height: 22px; fill: currentColor; }
+.btn-icon:hover  { background: rgba(109,191,91,0.15); color: var(--accent); }
+.btn-icon.active { background: rgba(109,191,91,0.2);  color: var(--accent); border-color: var(--accent); }
 
-.btn-icon:hover { background: rgba(109,191,91,0.15); color: var(--accent); }
-.btn-icon.active { background: rgba(109,191,91,0.2); color: var(--accent); border-color: var(--accent); }
-
-/* メインレイアウト */
+/* ── メインレイアウト ── */
 .main {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 20px;
-  padding: 20px 0;
+  grid-template-columns: 1fr 340px;
+  gap: 18px;
+  padding: 16px 0;
   overflow: hidden;
 }
 
-/* プレイヤー */
+/* ── プレイヤー ── */
 .player-section {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   overflow: hidden;
 }
 
@@ -134,16 +136,14 @@ html, body {
   border: none;
 }
 
-.now-playing {
-  text-align: center;
-}
+.now-playing { text-align: center; padding: 0 4px; }
 
 .now-playing-label {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-dim);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .track-title {
@@ -160,7 +160,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 18px;
 }
 
 .btn-control {
@@ -169,69 +169,80 @@ html, body {
   border-radius: 50%;
   color: var(--text-main);
   cursor: pointer;
-  width: 44px;
-  height: 44px;
+  width: 54px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
 }
 
-.btn-control svg { width: 22px; height: 22px; fill: currentColor; }
+.btn-control svg  { width: 26px; height: 26px; fill: currentColor; }
 .btn-control:hover { background: rgba(109,191,91,0.2); color: var(--accent); transform: scale(1.05); }
 
 .btn-play-main {
-  width: 56px;
-  height: 56px;
+  width: 70px;
+  height: 70px;
   background: var(--green-mid);
   border-color: var(--green-light);
-  box-shadow: 0 0 20px rgba(109,191,91,0.3);
+  box-shadow: 0 0 24px rgba(109,191,91,0.35);
 }
 
-.btn-play-main:hover {
-  background: var(--green-light);
-  box-shadow: 0 0 30px rgba(109,191,91,0.5);
-}
+.btn-play-main:hover { background: var(--green-light); box-shadow: 0 0 36px rgba(109,191,91,0.55); }
+.btn-play-main svg   { width: 36px; height: 36px; }
 
-.btn-play-main svg { width: 28px; height: 28px; }
-
-/* 音量 */
+/* 音量スライダー */
 .volume-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 8px;
+  padding: 0 4px;
 }
 
-.vol-icon { width: 20px; height: 20px; fill: var(--text-dim); flex-shrink: 0; }
+.vol-icon { width: 22px; height: 22px; fill: var(--text-dim); flex-shrink: 0; }
 
 input[type="range"] {
   flex: 1;
   -webkit-appearance: none;
-  height: 4px;
+  height: 6px;
   background: rgba(255,255,255,0.15);
-  border-radius: 2px;
+  border-radius: 3px;
   outline: none;
   cursor: pointer;
+  padding: 10px 0; /* タップ領域を広げる */
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 6px rgba(109,191,91,0.5);
+  box-shadow: 0 0 8px rgba(109,191,91,0.5);
+  cursor: pointer;
 }
 
-/* サイドバー */
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  box-shadow: 0 0 8px rgba(109,191,91,0.5);
+}
+
+/* ── サイドバー ── */
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  overflow: hidden;
+  gap: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green-mid) transparent;
 }
 
+/* カード (details 要素) */
 .card {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
@@ -240,11 +251,14 @@ input[type="range"]::-webkit-slider-thumb {
   flex-shrink: 0;
 }
 
-.card-header {
+/* summary の marker を消して flex にする */
+details.card > summary {
   display: flex;
+  list-style: none;
+  -webkit-appearance: none;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
+  gap: 6px;
+  padding: 12px 14px;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -252,29 +266,44 @@ input[type="range"]::-webkit-slider-thumb {
   color: var(--text-dim);
   border-bottom: 1px solid rgba(255,255,255,0.08);
   background: rgba(0,0,0,0.2);
+  cursor: pointer;
+  user-select: none;
+  min-height: var(--tap);
 }
 
-/* ポモドーロ */
+details.card > summary::-webkit-details-marker { display: none; }
+
+details.card > summary::after {
+  content: '▾';
+  font-size: 0.9rem;
+  margin-left: auto;
+  transition: transform 0.22s;
+  flex-shrink: 0;
+}
+
+details.card[open] > summary::after { transform: rotate(-180deg); }
+
+/* ── ポモドーロ ── */
 .pomo-cycle {
-  font-size: 0.62rem;
+  font-size: 0.65rem;
   letter-spacing: 0.02em;
   color: var(--accent);
   text-transform: none;
 }
 
 .pomo-body {
-  padding: 14px;
+  padding: 16px 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .pomo-mode {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  padding: 3px 14px;
+  padding: 4px 18px;
   border-radius: 20px;
 }
 
@@ -282,110 +311,135 @@ input[type="range"]::-webkit-slider-thumb {
 .mode-break { background: rgba(91,150,191,0.25); color: #7bb8e0; }
 
 .pomo-time {
-  font-size: 2.6rem;
+  font-size: 3rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
   color: var(--text-main);
   text-shadow: 0 0 16px rgba(109,191,91,0.25);
+  line-height: 1;
 }
 
-.pomo-controls {
-  display: flex;
-  gap: 6px;
-  width: 100%;
-}
+.pomo-controls { display: flex; gap: 8px; width: 100%; }
 
 .btn-pomo {
   flex: 1;
-  padding: 7px 4px;
-  font-size: 0.72rem;
+  min-height: var(--tap);
+  padding: 10px 6px;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-main);
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.18s;
+  line-height: 1.2;
 }
 
-.btn-pomo:hover { background: rgba(109,191,91,0.15); color: var(--accent); }
-
-.btn-pomo-primary {
-  background: var(--green-mid);
-  border-color: var(--green-light);
-}
-
+.btn-pomo:hover     { background: rgba(109,191,91,0.15); color: var(--accent); }
+.btn-pomo-primary   { background: var(--green-mid); border-color: var(--green-light); }
 .btn-pomo-primary:hover { background: var(--green-light); color: #fff; }
 
 .pomo-settings {
   display: flex;
-  gap: 10px;
+  gap: 14px;
   width: 100%;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
-.pomo-settings label,
-.autoswitch-body label {
-  font-size: 0.7rem;
+.pomo-settings label {
+  font-size: 0.75rem;
   color: var(--text-dim);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  min-height: var(--tap);
 }
 
 .pomo-settings input[type="number"] {
-  width: 42px;
-  padding: 3px 5px;
-  font-size: 0.78rem;
+  width: 54px;
+  height: 40px;
+  padding: 4px 6px;
+  font-size: 0.95rem;
   text-align: center;
   color: var(--text-main);
-  background: rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 6px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
 }
 
 .pomo-check {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.7rem;
+  gap: 10px;
+  font-size: 0.78rem;
   color: var(--text-dim);
   cursor: pointer;
+  min-height: var(--tap);
+  padding: 0 2px;
 }
 
-.pomo-check input { accent-color: var(--accent); }
+.pomo-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
 
-/* 自動切り替え */
+/* ── 自動切り替え ── */
 .autoswitch-body {
-  padding: 12px 14px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.autoswitch-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.autoswitch-body label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap);
 }
 
 .autoswitch-body select {
   color: var(--text-main);
-  background: rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 6px;
-  padding: 3px 6px;
-  font-size: 0.76rem;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.87rem;
+  min-height: 40px;
+  cursor: pointer;
 }
 
 .auto-countdown {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--accent);
+  white-space: nowrap;
 }
 
 /* トグルスイッチ */
 .switch {
   position: relative;
   display: inline-block;
-  width: 38px;
-  height: 20px;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
 }
 
 .switch input { opacity: 0; width: 0; height: 0; }
@@ -394,15 +448,15 @@ input[type="range"]::-webkit-slider-thumb {
   position: absolute;
   inset: 0;
   background: rgba(255,255,255,0.15);
-  border-radius: 20px;
+  border-radius: 26px;
   transition: 0.25s;
 }
 
 .slider::before {
   content: '';
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   left: 3px;
   top: 3px;
   background: #fff;
@@ -411,14 +465,15 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .switch input:checked + .slider { background: var(--green-light); }
-.switch input:checked + .slider::before { transform: translateX(18px); }
+.switch input:checked + .slider::before { transform: translateX(20px); }
 
-/* プレイリスト */
+/* ── プレイリスト ── */
 .playlist-section {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 120px;
+  overflow: hidden;
 }
 
 .playlist {
@@ -435,33 +490,23 @@ input[type="range"]::-webkit-slider-thumb {
 .playlist li {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
+  gap: 12px;
+  padding: 13px 16px;
   cursor: pointer;
   border-bottom: 1px solid rgba(255,255,255,0.04);
   transition: background 0.15s;
+  min-height: 52px;
 }
 
-.playlist li:hover { background: rgba(109,191,91,0.08); }
-
-.playlist li.active {
-  background: rgba(109,191,91,0.15);
-  border-left: 3px solid var(--accent);
-}
-
+.playlist li:hover  { background: rgba(109,191,91,0.08); }
+.playlist li.active { background: rgba(109,191,91,0.15); border-left: 3px solid var(--accent); }
 .playlist li.active .pl-name { color: var(--accent); }
 
-.pl-icon {
-  font-size: 1.1rem;
-  flex-shrink: 0;
-  width: 24px;
-  text-align: center;
-}
-
+.pl-icon { font-size: 1.25rem; flex-shrink: 0; width: 28px; text-align: center; }
 .pl-info { overflow: hidden; }
 
 .pl-name {
-  font-size: 0.82rem;
+  font-size: 0.87rem;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -469,30 +514,71 @@ input[type="range"]::-webkit-slider-thumb {
   color: var(--text-main);
 }
 
-.pl-duration {
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  margin-top: 2px;
-}
+.pl-duration { font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; }
 
-/* ステータスバー */
+/* ── ステータスバー ── */
 .status-bar {
   flex-shrink: 0;
-  padding: 8px 0;
+  padding: 8px 4px;
   font-size: 0.72rem;
   color: var(--text-dim);
   text-align: center;
   border-top: 1px solid rgba(255,255,255,0.06);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* レスポンシブ */
+/* ── レスポンシブ (スマホ) ── */
 @media (max-width: 760px) {
   html, body { overflow: auto; }
-  .app { height: auto; min-height: 100vh; }
+
+  .app {
+    height: auto;
+    min-height: 100dvh;
+    padding: 0 12px;
+  }
+
+  .header { padding: 12px 0 10px; }
+  .title  { font-size: 1.2rem; }
+
   .main {
     grid-template-columns: 1fr;
     overflow: visible;
+    gap: 14px;
+    padding: 12px 0 24px;
   }
-  .sidebar { overflow: visible; }
-  .playlist-section { max-height: 320px; }
+
+  .player-section { gap: 12px; }
+
+  /* コントロールボタンをさらに大きく */
+  .btn-control       { width: 62px; height: 62px; }
+  .btn-control svg   { width: 30px; height: 30px; }
+  .btn-play-main     { width: 80px; height: 80px; }
+  .btn-play-main svg { width: 42px; height: 42px; }
+  .player-controls   { gap: 22px; }
+
+  .track-title { font-size: 1.05rem; }
+
+  .sidebar { overflow: visible; gap: 10px; }
+
+  /* サイドバーカード — モバイルでは閉じた状態から始まる(JS側で制御) */
+  details.card > summary { min-height: 54px; font-size: 0.8rem; }
+
+  .pomo-time { font-size: 3.5rem; }
+  .btn-pomo  { min-height: 54px; font-size: 0.9rem; }
+
+  .pomo-settings input[type="number"] {
+    width: 62px;
+    height: 46px;
+    font-size: 1rem;
+  }
+
+  .autoswitch-body select { min-height: 46px; font-size: 0.92rem; padding: 8px 12px; }
+
+  .playlist li { padding: 15px 16px; min-height: 58px; }
+  .pl-name     { font-size: 0.92rem; }
+
+  input[type="range"]::-webkit-slider-thumb { width: 28px; height: 28px; }
+  input[type="range"]::-moz-range-thumb     { width: 28px; height: 28px; }
 }

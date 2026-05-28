@@ -16,10 +16,10 @@
           <span class="leaf">🌿</span> Nature Sounds
         </h1>
         <div class="controls-top">
-          <button id="btn-shuffle" class="btn-icon" title="シャッフル">
+          <button id="btn-shuffle" class="btn-icon" title="シャッフル" aria-label="シャッフル">
             <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm0.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
           </button>
-          <button id="btn-loop" class="btn-icon active" title="ループ">
+          <button id="btn-loop" class="btn-icon active" title="ループ" aria-label="ループ">
             <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
           </button>
         </div>
@@ -36,81 +36,79 @@
           <div id="track-title" class="track-title">読み込み中...</div>
         </div>
         <div class="player-controls">
-          <button id="btn-prev" class="btn-control" title="前の曲">
+          <button id="btn-prev" class="btn-control" title="前の曲" aria-label="前の曲">
             <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
           </button>
-          <button id="btn-play" class="btn-control btn-play-main" title="再生/一時停止">
-            <svg id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <button id="btn-play" class="btn-control btn-play-main" title="再生/一時停止" aria-label="再生/一時停止">
+            <svg id="icon-play"  viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             <svg id="icon-pause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
           </button>
-          <button id="btn-next" class="btn-control" title="次の曲">
+          <button id="btn-next" class="btn-control" title="次の曲" aria-label="次の曲">
             <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
           </button>
         </div>
         <div class="volume-row">
           <svg class="vol-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-          <input type="range" id="volume" min="0" max="100" value="70" />
+          <input type="range" id="volume" min="0" max="100" value="70" aria-label="音量" />
         </div>
       </div>
 
       <aside class="sidebar">
+
         <!-- ポモドーロタイマー -->
-        <section class="card pomodoro" id="pomodoro">
-          <div class="card-header">
+        <details class="card pomodoro" id="pomodoro" open>
+          <summary class="card-header">
             <span>🍅 ポモドーロ</span>
             <span id="pomo-cycle" class="pomo-cycle">0 セット完了</span>
-          </div>
+          </summary>
           <div class="pomo-body">
             <div id="pomo-mode" class="pomo-mode mode-work">作業</div>
             <div id="pomo-time" class="pomo-time">25:00</div>
             <div class="pomo-controls">
               <button id="pomo-start" class="btn-pomo btn-pomo-primary">開始</button>
               <button id="pomo-reset" class="btn-pomo">リセット</button>
-              <button id="pomo-skip" class="btn-pomo">スキップ</button>
+              <button id="pomo-skip"  class="btn-pomo">スキップ</button>
             </div>
             <div class="pomo-settings">
-              <label>作業
-                <input type="number" id="pomo-work" min="1" max="120" value="25" /> 分
-              </label>
-              <label>休憩
-                <input type="number" id="pomo-break" min="1" max="60" value="5" /> 分
-              </label>
+              <label>作業 <input type="number" id="pomo-work"  min="1" max="120" value="25" /> 分</label>
+              <label>休憩 <input type="number" id="pomo-break" min="1" max="60"  value="5"  /> 分</label>
             </div>
             <label class="pomo-check">
               <input type="checkbox" id="pomo-pause-bgm" checked />
               休憩中はBGMを止める
             </label>
           </div>
-        </section>
+        </details>
 
-        <!-- 自動BGM切り替え -->
-        <section class="card autoswitch">
-          <div class="card-header">
-            <span>🔄 自動切り替え</span>
-            <label class="switch">
-              <input type="checkbox" id="auto-toggle" checked />
-              <span class="slider"></span>
-            </label>
-          </div>
+        <!-- 自動 BGM 切り替え -->
+        <details class="card autoswitch" open>
+          <summary class="card-header">🔄 自動切り替え</summary>
           <div class="autoswitch-body">
-            <label>間隔
-              <select id="auto-interval">
-                <option value="5">5 分</option>
-                <option value="10" selected>10 分</option>
-                <option value="15">15 分</option>
-                <option value="20">20 分</option>
-                <option value="30">30 分</option>
-              </select>
-            </label>
+            <div class="autoswitch-row">
+              <label class="switch" aria-label="自動切り替えON/OFF">
+                <input type="checkbox" id="auto-toggle" checked />
+                <span class="slider"></span>
+              </label>
+              <label>間隔
+                <select id="auto-interval">
+                  <option value="5">5 分</option>
+                  <option value="10" selected>10 分</option>
+                  <option value="15">15 分</option>
+                  <option value="20">20 分</option>
+                  <option value="30">30 分</option>
+                </select>
+              </label>
+            </div>
             <span id="auto-countdown" class="auto-countdown">--:--</span>
           </div>
-        </section>
+        </details>
 
         <!-- プレイリスト -->
-        <section class="card playlist-section">
-          <div class="card-header">プレイリスト</div>
+        <details class="card playlist-section" open>
+          <summary class="card-header">プレイリスト</summary>
           <ul id="playlist" class="playlist"></ul>
-        </section>
+        </details>
+
       </aside>
     </main>
 
@@ -119,6 +117,12 @@
 
   <script src="app.js"></script>
   <script>
+    // モバイルではポモドーロ・自動切り替えカードを初期閉じ
+    if (window.innerWidth <= 760) {
+      document.querySelectorAll('details.card:not(.playlist-section)').forEach(d => {
+        d.removeAttribute('open');
+      });
+    }
     // YouTube IFrame API を非同期ロード
     var tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
