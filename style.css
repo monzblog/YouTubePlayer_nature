@@ -1,0 +1,322 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-dark:  #1a2e1a;
+  --green-mid:   #2d5a27;
+  --green-light: #4a8c3f;
+  --green-pale:  #7ec872;
+  --earth:       #8b6b3d;
+  --cream:       #f0ead6;
+  --text-main:   #e8f5e2;
+  --text-dim:    #a8c8a0;
+  --accent:      #6dbf5b;
+  --shadow:      rgba(0,0,0,0.5);
+  --radius:      12px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--green-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+/* 背景アニメーション */
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(45,90,39,0.6) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(26,46,26,0.8) 0%, transparent 60%),
+    linear-gradient(160deg, #0d1f0d 0%, #1a2e1a 50%, #0a1a0a 100%);
+  z-index: 0;
+  animation: bgShift 20s ease-in-out infinite alternate;
+}
+
+@keyframes bgShift {
+  from { filter: hue-rotate(0deg) brightness(1); }
+  to   { filter: hue-rotate(15deg) brightness(1.1); }
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ヘッダー */
+.header {
+  flex-shrink: 0;
+  padding: 16px 0 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(109,191,91,0.4);
+}
+
+.leaf { font-size: 1.3rem; }
+
+.controls-top {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  color: var(--text-dim);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-icon svg { width: 20px; height: 20px; fill: currentColor; }
+
+.btn-icon:hover { background: rgba(109,191,91,0.15); color: var(--accent); }
+.btn-icon.active { background: rgba(109,191,91,0.2); color: var(--accent); border-color: var(--accent); }
+
+/* メインレイアウト */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  padding: 20px 0;
+  overflow: hidden;
+}
+
+/* プレイヤー */
+.player-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.player-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: #000;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(109,191,91,0.15);
+}
+
+.player-wrapper #youtube-player,
+.player-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.now-playing {
+  text-align: center;
+}
+
+.now-playing-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.track-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 再生コントロール */
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-control {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  color: var(--text-main);
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-control svg { width: 22px; height: 22px; fill: currentColor; }
+.btn-control:hover { background: rgba(109,191,91,0.2); color: var(--accent); transform: scale(1.05); }
+
+.btn-play-main {
+  width: 56px;
+  height: 56px;
+  background: var(--green-mid);
+  border-color: var(--green-light);
+  box-shadow: 0 0 20px rgba(109,191,91,0.3);
+}
+
+.btn-play-main:hover {
+  background: var(--green-light);
+  box-shadow: 0 0 30px rgba(109,191,91,0.5);
+}
+
+.btn-play-main svg { width: 28px; height: 28px; }
+
+/* 音量 */
+.volume-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+}
+
+.vol-icon { width: 20px; height: 20px; fill: var(--text-dim); flex-shrink: 0; }
+
+input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(109,191,91,0.5);
+}
+
+/* プレイリスト */
+.playlist-section {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.playlist-header {
+  padding: 12px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+
+.playlist {
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green-mid) transparent;
+}
+
+.playlist::-webkit-scrollbar { width: 4px; }
+.playlist::-webkit-scrollbar-thumb { background: var(--green-mid); border-radius: 2px; }
+
+.playlist li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.15s;
+}
+
+.playlist li:hover { background: rgba(109,191,91,0.08); }
+
+.playlist li.active {
+  background: rgba(109,191,91,0.15);
+  border-left: 3px solid var(--accent);
+}
+
+.playlist li.active .pl-name { color: var(--accent); }
+
+.pl-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+
+.pl-info { overflow: hidden; }
+
+.pl-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-main);
+}
+
+.pl-duration {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* ステータスバー */
+.status-bar {
+  flex-shrink: 0;
+  padding: 8px 0;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* レスポンシブ */
+@media (max-width: 700px) {
+  html, body { overflow: auto; }
+  .app { height: auto; min-height: 100vh; }
+  .main {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+  .playlist-section { max-height: 300px; }
+}
