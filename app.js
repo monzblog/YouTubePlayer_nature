@@ -1,70 +1,70 @@
 'use strict';
 
-// ── 自然音楽プレイリスト ──────────────────────────────────────────────────────
+// ── Nature sound playlist ──────────────────────────────────────────────────────
 const TRACKS = [
   {
     id: 'eKFTSSKCzWA',
-    title: '森の雨音 — 10時間',
+    title: 'Forest Rain — 10 Hours',
     emoji: '🌧️',
     duration: '10:00:00',
   },
   {
     id: 'BHACKCNDMW8',
-    title: '穏やかな雨音 — リラックス',
+    title: 'Gentle Rain — Relax',
     emoji: '🌂',
     duration: '3:00:00',
   },
   {
     id: 'V1RPi2MYptM',
-    title: '海の波音 — 白いノイズ',
+    title: 'Ocean Waves — White Noise',
     emoji: '🌊',
     duration: '8:00:00',
   },
   {
     id: 'q76bMs-NwRk',
-    title: '小川のせせらぎ',
+    title: 'Babbling Brook',
     emoji: '🏞️',
     duration: '3:00:00',
   },
   {
     id: 'lFEGoB_p5Fw',
-    title: '深い森のサウンド',
+    title: 'Deep Forest Sounds',
     emoji: '🌲',
     duration: '1:00:00',
   },
   {
     id: 'nMfPqeZjc2c',
-    title: '海辺の夜 — 波と風',
+    title: 'Seaside Night — Waves & Wind',
     emoji: '🌙',
     duration: '8:00:00',
   },
   {
     id: 'xNN7iTA57jM',
-    title: '滝の音 — 集中と瞑想',
+    title: 'Waterfall — Focus & Meditation',
     emoji: '🌀',
     duration: '3:00:00',
   },
   {
     id: 'bP9gMpl1gyQ',
-    title: '雷雨の夜 — 睡眠用',
+    title: 'Thunderstorm Night — Sleep',
     emoji: '⛈️',
     duration: '8:00:00',
   },
   {
     id: '9Q634rbsypE',
-    title: '鳥のさえずり — 朝の森',
+    title: 'Bird Song — Morning Forest',
     emoji: '🐦',
     duration: '3:00:00',
   },
   {
     id: 'Qm846KdZN_M',
-    title: '夜の虫の声 — 秋',
+    title: 'Night Insects — Autumn',
     emoji: '🦗',
     duration: '3:00:00',
   },
 ];
 
-// ── 状態 ─────────────────────────────────────────────────────────────────────
+// ── State ─────────────────────────────────────────────────────────────────────
 let player = null;
 let currentIndex = 0;
 let isShuffled = false;
@@ -85,12 +85,12 @@ const iconPlay     = document.getElementById('icon-play');
 const iconPause    = document.getElementById('icon-pause');
 const volumeSlider = document.getElementById('volume');
 
-// 自動切り替え
+// Auto switch
 const autoToggle    = document.getElementById('auto-toggle');
 const autoInterval  = document.getElementById('auto-interval');
 const autoCountdown = document.getElementById('auto-countdown');
 
-// ポモドーロ
+// Pomodoro
 const pomoMode     = document.getElementById('pomo-mode');
 const pomoTime     = document.getElementById('pomo-time');
 const pomoCycle    = document.getElementById('pomo-cycle');
@@ -101,7 +101,7 @@ const pomoWorkIn   = document.getElementById('pomo-work');
 const pomoBreakIn  = document.getElementById('pomo-break');
 const pomoPauseBgm = document.getElementById('pomo-pause-bgm');
 
-// ── ユーティリティ ────────────────────────────────────────────────────────────
+// ── Utilities ────────────────────────────────────────────────────────────
 function buildShuffledOrder() {
   shuffledOrder = [...Array(TRACKS.length).keys()];
   for (let i = shuffledOrder.length - 1; i > 0; i--) {
@@ -124,7 +124,7 @@ function setPlayIcon(playing) {
   iconPause.style.display = playing ? '' : 'none';
 }
 
-// ── プレイリスト UI ───────────────────────────────────────────────────────────
+// ── Playlist UI ───────────────────────────────────────────────────────────
 function renderPlaylist() {
   elPlaylist.innerHTML = '';
   TRACKS.forEach((track, i) => {
@@ -161,7 +161,7 @@ function highlightActive() {
   if (activeLi) activeLi.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
-// ── トラック操作 ──────────────────────────────────────────────────────────────
+// ── Track controls ──────────────────────────────────────────────────────────────
 function loadTrack(pos, autoplay = true) {
   currentIndex = ((pos % TRACKS.length) + TRACKS.length) % TRACKS.length;
   const track = TRACKS[getOrderedIndex(currentIndex)];
@@ -177,7 +177,7 @@ function loadTrack(pos, autoplay = true) {
     }
   }
 
-  // 曲が切り替わったら自動切り替えカウントダウンをリセット
+  // Reset auto-switch countdown on track change
   resetAutoSwitch();
 }
 
@@ -189,7 +189,7 @@ function playPrev() {
   loadTrack(currentIndex - 1, true);
 }
 
-// ── YouTube IFrame API コールバック ───────────────────────────────────────────
+// ── YouTube IFrame API callbacks ───────────────────────────────────────────
 window.onYouTubeIframeAPIReady = function () {
   player = new YT.Player('youtube-player', {
     height: '100%',
@@ -225,26 +225,26 @@ function onPlayerStateChange(event) {
     setPlayIcon(true);
     const data = player.getVideoData();
     if (data && data.title) elTitle.textContent = data.title;
-    setStatus(`▶ 再生中: ${TRACKS[getOrderedIndex(currentIndex)].emoji}  ${elTitle.textContent}`);
+    setStatus(`▶ Now playing: ${TRACKS[getOrderedIndex(currentIndex)].emoji}  ${elTitle.textContent}`);
   } else if (state === YT.PlayerState.PAUSED) {
     setPlayIcon(false);
-    setStatus('⏸ 一時停止');
+    setStatus('⏸ Paused');
   } else if (state === YT.PlayerState.ENDED) {
     setPlayIcon(false);
     if (isLooping) {
       playNext();
     }
   } else if (state === YT.PlayerState.BUFFERING) {
-    setStatus('⏳ バッファリング中...');
+    setStatus('⏳ Buffering...');
   }
 }
 
 function onPlayerError(event) {
-  setStatus(`⚠ 再生エラー (${event.data}) — 次の曲へ移動します`);
+  setStatus(`⚠ Playback error (${event.data}) — skipping to next`);
   setTimeout(playNext, 2000);
 }
 
-// ── ボタンイベント ────────────────────────────────────────────────────────────
+// ── Button events ────────────────────────────────────────────────────────────
 btnPlay.addEventListener('click', () => {
   if (!player) return;
   if (isPlaying) {
@@ -271,13 +271,13 @@ btnShuffle.addEventListener('click', () => {
     buildShuffledOrder();
     currentIndex = shuffledOrder.indexOf(getOrderedIndex(currentIndex));
   }
-  setStatus(isShuffled ? '🔀 シャッフルON' : '➡ シャッフルOFF');
+  setStatus(isShuffled ? '🔀 Shuffle ON' : '➡ Shuffle OFF');
 });
 
 btnLoop.addEventListener('click', () => {
   isLooping = !isLooping;
   btnLoop.classList.toggle('active', isLooping);
-  setStatus(isLooping ? '🔁 ループON' : '▶ ループOFF');
+  setStatus(isLooping ? '🔁 Loop ON' : '▶ Loop OFF');
 });
 
 volumeSlider.addEventListener('input', () => {
@@ -286,7 +286,7 @@ volumeSlider.addEventListener('input', () => {
   }
 });
 
-// ── 通知音 (Web Audio で短いチャイム) ─────────────────────────────────────────
+// ── Chime sound via Web Audio ─────────────────────────────────────────
 let audioCtx = null;
 function beep(freq = 660, duration = 0.18, delay = 0) {
   try {
@@ -302,7 +302,7 @@ function beep(freq = 660, duration = 0.18, delay = 0) {
     osc.connect(gain).connect(audioCtx.destination);
     osc.start(t);
     osc.stop(t + duration);
-  } catch (e) { /* 音声非対応環境では無視 */ }
+  } catch (e) { /* ignore in environments without audio */ }
 }
 
 function notify(title, body) {
@@ -311,8 +311,8 @@ function notify(title, body) {
   }
 }
 
-// ── 自動 BGM 切り替え ─────────────────────────────────────────────────────────
-let autoRemaining = 0;   // 残り秒
+// ── Auto BGM switch ─────────────────────────────────────────────────────────
+let autoRemaining = 0;   // remaining seconds
 let autoTimerId = null;
 
 function autoIntervalSec() {
@@ -339,15 +339,15 @@ function updateAutoCountdown() {
 }
 
 function tickAutoSwitch() {
-  // ポモドーロ休憩中で BGM 停止中は切り替えを進めない
+  // Do not advance during Pomodoro break while BGM is paused
   if (!autoToggle.checked) return;
   if (pomoActive && pomoIsBreak && pomoPauseBgm.checked) return;
-  if (!isPlaying) return; // 一時停止中はカウントしない
+  if (!isPlaying) return; // do not count while paused
 
   autoRemaining--;
   if (autoRemaining <= 0) {
-    setStatus('🔄 BGM を自動切り替えします');
-    playNext();          // playNext → loadTrack → resetAutoSwitch で再セット
+    setStatus('🔄 Auto-switching BGM');
+    playNext();          // playNext → loadTrack → resetAutoSwitch resets the timer
     return;
   }
   updateAutoCountdown();
@@ -356,20 +356,20 @@ function tickAutoSwitch() {
 autoToggle.addEventListener('change', () => {
   resetAutoSwitch();
   setStatus(autoToggle.checked
-    ? `🔄 自動切り替え ON (${autoInterval.value}分ごと)`
-    : '🔄 自動切り替え OFF');
+    ? `🔄 Auto-switch ON (every ${autoInterval.value} min)`
+    : '🔄 Auto-switch OFF');
 });
 
 autoInterval.addEventListener('change', () => {
   resetAutoSwitch();
-  setStatus(`🔄 自動切り替え間隔: ${autoInterval.value}分`);
+  setStatus(`🔄 Interval: ${autoInterval.value} min`);
 });
 
-// ── ポモドーロタイマー ────────────────────────────────────────────────────────
-let pomoActive = false;     // 動作中
-let pomoIsBreak = false;    // 休憩フェーズか
+// ── Pomodoro timer ────────────────────────────────────────────────────────
+let pomoActive = false;     // running
+let pomoIsBreak = false;    // break phase
 let pomoRemaining = 25 * 60;
-let pomoCompleted = 0;      // 完了した作業セット数
+let pomoCompleted = 0;      // completed work sets
 let pomoTimerId = null;
 let bgmWasPlayingBeforeBreak = false;
 
@@ -378,11 +378,11 @@ function pomoBreakSec() { return Math.max(1, Number(pomoBreakIn.value)) * 60; }
 
 function renderPomo() {
   pomoTime.textContent = formatMMSS(pomoRemaining);
-  pomoMode.textContent = pomoIsBreak ? '休憩' : '作業';
+  pomoMode.textContent = pomoIsBreak ? 'Break' : 'Work';
   pomoMode.classList.toggle('mode-work', !pomoIsBreak);
   pomoMode.classList.toggle('mode-break', pomoIsBreak);
-  pomoCycle.textContent = `${pomoCompleted} セット完了`;
-  pomoStart.textContent = pomoActive ? '一時停止' : '開始';
+  pomoCycle.textContent = `${pomoCompleted} sets done`;
+  pomoStart.textContent = pomoActive ? 'Pause' : 'Start';
 }
 
 function pomoResetToWork() {
@@ -395,9 +395,9 @@ function startBreak() {
   pomoIsBreak = true;
   pomoRemaining = pomoBreakSec();
   beep(660); beep(880, 0.18, 0.2);
-  notify('🍅 作業終了！', `${pomoBreakIn.value}分の休憩を取りましょう`);
-  setStatus('☕ 休憩タイム');
-  // 休憩中は BGM を止める
+  notify('🍅 Work done!', `Take a ${pomoBreakIn.value} min break`);
+  setStatus('☕ Break time');
+  // Stop BGM during break
   if (pomoPauseBgm.checked && player) {
     bgmWasPlayingBeforeBreak = isPlaying;
     if (isPlaying) player.pauseVideo();
@@ -409,9 +409,9 @@ function startWork() {
   pomoIsBreak = false;
   pomoRemaining = pomoWorkSec();
   beep(880); beep(660, 0.18, 0.2);
-  notify('🍅 休憩終了！', '作業を再開しましょう');
-  setStatus('💪 作業タイム');
-  // 休憩前に再生していたら BGM を再開
+  notify('🍅 Break over!', 'Time to get back to work');
+  setStatus('💪 Work time');
+  // Resume BGM if it was playing before break
   if (pomoPauseBgm.checked && player && bgmWasPlayingBeforeBreak) {
     player.playVideo();
   }
@@ -434,13 +434,13 @@ function tickPomo() {
 }
 
 pomoStart.addEventListener('click', () => {
-  // 通知許可をリクエスト
+  // Request notification permission
   if ('Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission();
   }
   pomoActive = !pomoActive;
-  if (pomoActive) setStatus(pomoIsBreak ? '☕ 休憩中' : '💪 作業中 — 集中しましょう');
-  else setStatus('⏸ ポモドーロ一時停止');
+  if (pomoActive) setStatus(pomoIsBreak ? '☕ Break time' : '💪 Work time — stay focused');
+  else setStatus('⏸ Pomodoro paused');
   renderPomo();
 });
 
@@ -448,7 +448,7 @@ pomoReset.addEventListener('click', () => {
   pomoActive = false;
   pomoCompleted = 0;
   pomoResetToWork();
-  setStatus('🍅 ポモドーロをリセットしました');
+  setStatus('🍅 Pomodoro reset');
 });
 
 pomoSkip.addEventListener('click', () => {
@@ -460,7 +460,7 @@ pomoSkip.addEventListener('click', () => {
   }
 });
 
-// 設定変更時、停止中なら表示を更新
+// Update display on settings change when stopped
 pomoWorkIn.addEventListener('change', () => {
   if (!pomoActive && !pomoIsBreak) { pomoRemaining = pomoWorkSec(); renderPomo(); }
 });
@@ -468,13 +468,13 @@ pomoBreakIn.addEventListener('change', () => {
   if (!pomoActive && pomoIsBreak) { pomoRemaining = pomoBreakSec(); renderPomo(); }
 });
 
-// ── 共通 1 秒タイマー ─────────────────────────────────────────────────────────
+// ── Shared 1-second ticker ─────────────────────────────────────────────────────────
 setInterval(() => {
   tickAutoSwitch();
   tickPomo();
 }, 1000);
 
-// ── キーボードショートカット ──────────────────────────────────────────────────
+// ── Keyboard shortcuts ──────────────────────────────────────────────────
 document.addEventListener('keydown', (e) => {
   if (e.target.tagName === 'INPUT') return;
   switch (e.key) {
@@ -510,9 +510,9 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// ── 初期化 ────────────────────────────────────────────────────────────────────
+// ── Init ────────────────────────────────────────────────────────────────────
 buildShuffledOrder();
 renderPlaylist();
 resetAutoSwitch();
 pomoResetToWork();
-setStatus('YouTube IFrame API を読み込み中...');
+setStatus('Loading YouTube IFrame API...');
